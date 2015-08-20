@@ -19,6 +19,7 @@ package kafka.utils
 
 import java.io._
 import java.nio._
+import java.nio.file._
 import charset.Charset
 import java.nio.channels._
 import java.util.concurrent.locks.{ReadWriteLock, Lock}
@@ -157,9 +158,9 @@ object Utils extends Logging {
    */
   def openChannel(file: File, mutable: Boolean): FileChannel = {
     if(mutable)
-      new RandomAccessFile(file, "rw").getChannel()
+      FileChannel.open(file.toPath, StandardOpenOption.WRITE, StandardOpenOption.READ, StandardOpenOption.CREATE)
     else
-      new FileInputStream(file).getChannel()
+      FileChannel.open(file.toPath, StandardOpenOption.READ)
   }
   
   /**
